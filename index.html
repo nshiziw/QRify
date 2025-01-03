@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      text-align: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .qr-code {
+      margin-top: 20px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>QR Code Generator</h1>
+    <div>
+      <label for="qr-data">Enter data for QR code:</label>
+      <input type="text" id="qr-data" value="MrBeanDev" />
+    </div>
+    <div class="qr-code">
+      <img id="qr-img" src="" alt="QR Code" width="500" height="500"/>
+    </div>
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <button id="download-btn" style="display:none;" onclick="downloadQRCode()">Download QR Code</button>
+  </div>
+
+  <script>
+    function generateQRCode() {
+      const data = document.getElementById("qr-data").value;
+      const qrImg = document.getElementById("qr-img");
+      const downloadBtn = document.getElementById("download-btn");
+
+      // Generate the QR code URL with a size of 500x500
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(data)}`;
+
+      // Set the QR code image source
+      qrImg.src = qrCodeUrl;
+
+      // Show the download button
+      downloadBtn.style.display = "inline-block";
+    }
+
+    function downloadQRCode() {
+      const qrImg = document.getElementById("qr-img");
+
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = qrImg.src; // Set the QR code image URL as the link's href
+      link.download = 'QRCode.png'; // Specify the filename for the download
+
+      // Append the link to the body, click it to trigger the download, and remove it
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Generate the QR code when the page loads
+    window.onload = generateQRCode;
+  </script>
+</body>
+</html>
